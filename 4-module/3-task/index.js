@@ -1,16 +1,19 @@
+const { clearLine } = require("inquirer/lib/utils/readline");
 
 function highlight(table) {
- let status = table.rows(0).cells(3);
+  let rows = table.rows;
+  let cells = table.cells;
+  let cellStatus = rows[0].cells[3];
 
- for (let i = 0; i < table.rows.length; i++) {
-   status = table.rows(i).cells(3);
-   if (status.classList.contains('data-available="true"')) {
-     status.classList.add('available');
-   } else if (status.classList.contains('data-available="false"')) {
-    status.classList.add('unavailable');
-   } else {
-    status.classList.add('hidden');
-   }
- }
-   return status;
+  for(let i=0; i<rows.length; i++) {
+    cellStatus=rows[i].cells[3];
+    if (cellStatus.dataset.available=='true') {
+      rows[i].className.add('available');
+    } else if (cellStatus.dataset.available=='false') {
+      rows[i].className.add('unavailable');
+    } else {
+      rows[i].setAttribute('hidden');
+    }
+  }
+
 }
