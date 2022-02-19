@@ -1,7 +1,6 @@
 function makeFriendsList(friends) {
   let ul = document.createElement('ul');
-  document.body.append(ul);
-  let result = document.querySelector('ul');
+  
   let fragment = new DocumentFragment(); 
   
 
@@ -11,6 +10,6 @@ function makeFriendsList(friends) {
     fragment.appendChild(li);
     
   }
-  result.append(fragment);
-  return result;
+  ul.append(fragment);
+  return ul;
 }
