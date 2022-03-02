@@ -1,11 +1,9 @@
 function getMinMax(str) {
+  let arr = str.split(' ').filter(item=>item == +item);
+  arr.reduce((acc, rec) => {
+    return {min: acc < rec ? acc: rec, max: acc > rec? acc : rec}
+         
+  }, {})
 
-  let result = str.split(' ').filter(item => item == +item);
-  let resultmax = Math.max.apply(null, result);
-  let resultmin = Math.min.apply(null, result);
-  let f = {
-    min: resultmin,
-    max: resultmax
-  }
-  return f;
+
 }

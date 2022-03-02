@@ -1,3 +1,6 @@
 function namify(users) {
-  return users.map(item => item.name);
+  return users.reduce((acc, rec) => {
+    return [...acc, rec.name];
+
+  }, []);
 }
