@@ -7,34 +7,24 @@ function initCarousel() {
   
 
   arrowLeft.addEventListener('click', () => {
-    startPosition+=1;
-    carousel.style.transform = 'translateX('+ (-offsetWidth * startPosition) + 'px)';
+    startPosition-=1;
+    carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
     buttons();
 })
 
   arrowRight.addEventListener('click', () => {
-    startPosition-=1;
+    startPosition+=1;
     carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
     buttons();
   })
 
   const buttons = () => {
+    startPosition==0 ? arrowLeft.style.display = 'none' :  arrowLeft.style.display = '';
 
-    if(startPosition==3) {
-    arrowLeft.style.display = 'none';
-  } else {
-    arrowLeft.style.display = '';
+    startPosition==3 ? arrowRight.style.display = 'none' : arrowRight.style.display = '';
   }
 
-  if(startPosition==0) {
-    arrowRight.style.display = 'none';
-  } else {
-    arrowRight.style.display = '';
-  }
-  
-}
-
-buttons();
+ buttons();
 
 
 }
