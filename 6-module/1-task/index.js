@@ -36,7 +36,7 @@ elem;
         <th></th>
     </tr>
     </thead>
-    <tbody` + this.rows.map(item => `
+    <tbody ${ this.rows.map(item => `
     <tr>
         <td>${item.name}</td>
         <td>${item.age}</td>
@@ -44,7 +44,7 @@ elem;
         <td>${item.city}</td>
         <td><button data-action = 'remove'>X</button></td>
     </tr>
-    `).join('') + `</tbody`;
+    `).join('')}  </tbody`;
 
     this.elem.innerHTML = t;
 

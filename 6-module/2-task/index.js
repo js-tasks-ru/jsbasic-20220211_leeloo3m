@@ -35,7 +35,7 @@ export default class ProductCard {
 
   userEvent() {
 
-    const btn = document.querySelector('.card__button');
+    const btn = this.elem.querySelector('.card__button');
     btn.onclick = 'dispatch()';
     const dispatch = ()=>{
       const customEvent = new CustomEvent("product-add", 
