@@ -13,7 +13,7 @@
  *
  */
  export default class UserTable {
-  elem;
+elem;
  constructor(rows) {
     this.rows = rows;
     this.elem = document.createElement('table');
