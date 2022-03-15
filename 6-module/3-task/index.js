@@ -5,15 +5,12 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
     this.elem = document.createElement('div');
-    this.elem.classList.add('carousel__inner');
+    this.elem.classList.add('carousel');
+    this.arrow();
     this.slide();
     this.initCarousel();
     this.userEvent();
-
-
     console.log(this.elem);
-
-
 
   }
 
@@ -21,10 +18,21 @@ export default class Carousel {
     return this.elem;
   }
 
+  arrow() {
+    let a = ` <div class="carousel__arrow carousel__arrow_right">
+    <img src="/assets/images/icons/angle-icon.svg" alt="icon">
+  </div>
+  <div class="carousel__arrow carousel__arrow_left">
+    <img src="/assets/images/icons/angle-left-icon.svg" alt="icon">
+  </div>`
+  this.elem.innerHTML = a;
+
+  }
 
   slide() {
-
-    let penangShrimp = `
+   
+    let s = `<div class='carousel__inner'>
+    
       <div class="carousel__slide" data-id="penang-shrimp">
   <img src="/assets/images/carousel/${this.slides[0].image}" class="carousel__img" alt="slide">
   <div class="carousel__caption">
@@ -34,11 +42,8 @@ export default class Carousel {
       <img src="/assets/images/icons/plus-icon.svg" alt="icon">
     </button>
   </div>
-</div>`
-    this.elem.innerHTML = penangShrimp;
-   
-
-    let chickenCashew = `
+</div>
+    
     <div class="carousel__slide" data-id="chicken-cashew">
     <img src="/assets/images/carousel/${this.slides[1].image}" class="carousel__img" alt="slide">
     <div class="carousel__caption">
@@ -48,10 +53,8 @@ export default class Carousel {
         <img src="/assets/images/icons/plus-icon.svg" alt="icon">
       </button>
     </div>
-  </div>`
-    this.elem.innerHTML += chickenCashew;
+  </div>
 
-    let redCurryVeggies = `
       <div class="carousel__slide" data-id="red-curry-veggies">
       <img src="/assets/images/carousel/${this.slides[2].image}" class="carousel__img" alt="slide">
       <div class="carousel__caption">
@@ -61,10 +64,8 @@ export default class Carousel {
           <img src="/assets/images/icons/plus-icon.svg" alt="icon">
         </button>
       </div>
-    </div>`
-    this.elem.innerHTML += redCurryVeggies;
+    </div>
 
-    let chickenSpringrolls = `
         <div class="carousel__slide" data-id="chicken-springrolls">
         <img src="/assets/images/carousel/${this.slides[3].image}" class="carousel__img" alt="slide">
         <div class="carousel__caption">
@@ -74,14 +75,40 @@ export default class Carousel {
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
           </button>
         </div>
+      </div>
+
       </div>`
-    this.elem.innerHTML += chickenSpringrolls;
-
- 
-
+    this.elem.innerHTML += s;
+  
   }
 
   initCarousel() {
+    let arrowLeft = this.elem.querySelector('.carousel__arrow_left');
+    let arrowRight = this.elem.querySelector('.carousel__arrow_right');
+    let carousel = this.elem.querySelector('.carousel__inner');
+    let offsetWidth = 988;
+  
+    let startPosition = 0;
+
+    arrowLeft.addEventListener('click', () => {
+      startPosition-=1;
+      carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
+      buttons();
+  })
+  
+    arrowRight.addEventListener('click', () => {
+      startPosition+=1;
+      carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
+      buttons();
+    })
+
+    const buttons = () => {
+      startPosition==0 ? arrowLeft.style.display = 'none' :  arrowLeft.style.display = '';
+  
+      startPosition==3 ? arrowRight.style.display = 'none' : arrowRight.style.display = '';
+    }
+  
+   buttons();
 
   }
 
