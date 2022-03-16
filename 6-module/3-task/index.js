@@ -10,7 +10,7 @@ export default class Carousel {
     this.slide();
     this.initCarousel();
     this.userEvent();
-    console.log(this.elem);
+   
 
   }
 
@@ -86,17 +86,19 @@ export default class Carousel {
     let arrowLeft = this.elem.querySelector('.carousel__arrow_left');
     let arrowRight = this.elem.querySelector('.carousel__arrow_right');
     let carousel = this.elem.querySelector('.carousel__inner');
-    let offsetWidth = 988;
+    
   
     let startPosition = 0;
 
     arrowLeft.addEventListener('click', () => {
+      let offsetWidth = carousel.offsetWidth;
       startPosition-=1;
       carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
       buttons();
   })
   
     arrowRight.addEventListener('click', () => {
+      let offsetWidth = carousel.offsetWidth;
       startPosition+=1;
       carousel.style.transform = 'translateX(' +(-offsetWidth * startPosition) + 'px)';
       buttons();
@@ -119,7 +121,7 @@ export default class Carousel {
     btn.forEach( el=> el.addEventListener('click', (event)=>{
      
      let id = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
-
+     
       const customEvent = new CustomEvent("product-add", 
         {detail: id,
         bubbles: true}
