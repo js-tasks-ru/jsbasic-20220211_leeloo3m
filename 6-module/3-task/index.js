@@ -92,9 +92,10 @@ export default class Carousel {
       const customEvent = new CustomEvent("product-add", 
         {detail: id,
         bubbles: true}
+        
       );
       this.elem.dispatchEvent(customEvent);
-
+      
 
     }))
   }  
