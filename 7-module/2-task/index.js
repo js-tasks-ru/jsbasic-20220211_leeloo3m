@@ -4,8 +4,7 @@ export default class Modal {
 modalWindow;
 
   constructor() {
-    
-//создается верстка
+
    this.modalWindow = createElement(`
     
         <div class="modal">
@@ -26,7 +25,7 @@ modalWindow;
     `);
     
     
-    this.escape();
+   
     this.btnClose();
   }
   
@@ -36,7 +35,9 @@ modalWindow;
     let body = document.querySelector('body');
     body.classList.add('is-modal-open');
     body.append(this.modalWindow);
-
+    
+    document.addEventListener('keydown', this.handle);
+    
   }
   setTitle(str) {
     let modalTitle = this.modalWindow.querySelector('.modal__title');
@@ -48,16 +49,15 @@ modalWindow;
     modalBody.innerHTML = "";
     modalBody.append(node);
   }
-  escape() {
-    document.addEventListener('keydown', this.handle);
-  }
-
- 
+  
     handle(e) {
       if (e.code === 'Escape') {
         let body = document.querySelector('body');
         body.classList.remove('is-modal-open');
         let modal = document.querySelector('.modal');
+        if(!modal) {
+          return
+        }
         modal.remove();
       }
   }
@@ -67,6 +67,9 @@ modalWindow;
       let body = document.querySelector('body');
       body.classList.remove('is-modal-open');
       let modal = document.querySelector('.modal');
+      if(!modal) {
+        return
+      }
       modal.remove();
       document.removeEventListener('keydown', this.handle);
 
@@ -76,6 +79,9 @@ modalWindow;
     let body = document.querySelector('body');
     body.classList.remove('is-modal-open');
     let modal = document.querySelector('.modal');
+    if(!modal) {
+      return
+    }
     modal.remove();
     document.removeEventListener('keydown', this.handle);
 
