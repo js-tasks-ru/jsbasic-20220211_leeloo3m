@@ -1,11 +1,12 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class Modal {
+modalWindow;
 
   constructor() {
-    let conteiner = document.querySelector('.container');
-
-    let modalWindow = createElement(`
+    
+//создается верстка
+   this.modalWindow = createElement(`
     
         <div class="modal">
           <div class="modal__overlay"></div>
@@ -22,21 +23,48 @@ export default class Modal {
           </div>
         </div>
       </div>
-    `)
-    conteiner.append(modalWindow);
+    `);
     
-
+    
+    this.escape();
+    this.btnClose();
   }
   
   
   open() {
+  
     let body = document.querySelector('body');
     body.classList.add('is-modal-open');
+    body.append(this.modalWindow);
 
+  }
+  setTitle(str) {
+    let modalTitle = this.modalWindow.querySelector('.modal__title');
+    modalTitle.innerHTML = str;
+  }
+
+  setBody(node) {
+    let modalBody = this.modalWindow.querySelector('.modal__body');
+    modalBody.innerHTML = "";
+    modalBody.append(node);
+  }
+  escape() {
     document.addEventListener('keydown', this.handle);
+  }
 
-    let btnClose = document.querySelector('.modal__close');
+ 
+    handle(e) {
+      if (e.code === 'Escape') {
+        let body = document.querySelector('body');
+        body.classList.remove('is-modal-open');
+        let modal = document.querySelector('.modal');
+        modal.remove();
+      }
+  }
+  btnClose() {
+    let btnClose = this.modalWindow.querySelector('.modal__close');
     btnClose.addEventListener('click', () => {
+      let body = document.querySelector('body');
       body.classList.remove('is-modal-open');
       let modal = document.querySelector('.modal');
       modal.remove();
@@ -44,30 +72,6 @@ export default class Modal {
 
     })
   }
-
- 
-    handle(e) {
-      if (e.code == 'Escape') {
-        body.classList.remove('is-modal-open');
-        let modal = document.querySelector('.modal');
-        modal.remove();
-      }
-   
-
-
-  }
-
-  setTitle(str) {
-    let modalTitle = document.querySelector('.modal__title');
-    modalTitle.innerHTML = str;
-  }
-
-  setBody(node) {
-    let modalBody = document.querySelector('.modal__body');
-    modalBody.innerHTML = "";
-    modalBody.append(node);
-  }
-
   close() {
     let body = document.querySelector('body');
     body.classList.remove('is-modal-open');

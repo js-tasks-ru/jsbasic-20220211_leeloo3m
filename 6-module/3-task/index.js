@@ -86,7 +86,8 @@ export default class Carousel {
     
     btn.forEach( el=> el.addEventListener('click', (event)=>{
      
-     let id = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+     let id = el.closest('[data-id]').dataset.id;
+     
      
      
       const customEvent = new CustomEvent("product-add", 

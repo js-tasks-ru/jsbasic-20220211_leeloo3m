@@ -13,22 +13,12 @@ export default class StepSlider {
 
   makeHTML() {
     let a = `
-    <!--Корневой элемент слайдера-->
 <div class="slider">
-
-  <!--Ползунок слайдера с активным значением-->
   <div class="slider__thumb">
     <span class="slider__value">0</span>
   </div>
-
-  <!--Полоска слайдера-->
-  <div class="slider__progress"></div>
-
-  <!-- Шаги слайдера (вертикальные чёрточки) -->
-  <div class="slider__steps">
-    <!-- текущий выбранный шаг выделен этим классом -->
-   
-    
+  <div class="slider__progress" "></div>
+  <div class="slider__steps">  
   </div>
 </div>
     `
@@ -51,10 +41,11 @@ export default class StepSlider {
   changeVolume() {
     
     this.elem.addEventListener('click', (event)=>{
+      
       let left = event.clientX - this.elem.getBoundingClientRect().left;
       
       let leftRelative = left / this.elem.offsetWidth;
-     
+      
       let segments = this.steps - 1;
       let approximateValue = leftRelative * segments;
       this.value = Math.round(approximateValue);
@@ -65,9 +56,10 @@ export default class StepSlider {
       
       let sliderSteps = this.elem.querySelector('.slider__steps');
       let spans = Array.from(sliderSteps.querySelectorAll('span'));
-    
-      let span = spans[this.value+1];
+      
+      let span = spans[this.value];
       span.classList.add('slider__step-active');
+      
       
 
       const customEvent = new CustomEvent('slider-change', { 
@@ -81,6 +73,8 @@ export default class StepSlider {
       let progress = this.elem.querySelector('.slider__progress');
       thumb.style.left = `${valuePercents}%`;
       progress.style.width = `${valuePercents}%`;
+
+      
      
           })
   }
