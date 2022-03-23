@@ -13,23 +13,24 @@ export default class StepSlider {
 
   makeHTML() {
     let a = `
-<div class="slider">
+
   <div class="slider__thumb">
-    <span class="slider__value">0</span>
+    <span class="slider__value"></span>
   </div>
-  <div class="slider__progress" "></div>
-  <div class="slider__steps">  
+  <div class="slider__progress"></div>
+  <div class="slider__steps">
+  <span class="slider__step-active"></span>
   </div>
 </div>
     `
     this.elem.innerHTML = a;
-   
     
   }
 
   span() {
     let sliderSteps = this.elem.querySelector('.slider__steps');
     let spans = Array.from(sliderSteps.querySelectorAll('span')).length;
+    
     
      while (spans < this.steps) {
       sliderSteps.insertAdjacentHTML('afterbegin', "<span></span>");
@@ -56,9 +57,16 @@ export default class StepSlider {
       
       let sliderSteps = this.elem.querySelector('.slider__steps');
       let spans = Array.from(sliderSteps.querySelectorAll('span'));
-      
+      spans[0].classList.add('slider__step-active');
+      if(this.value==-0){
+        this.value==0
+      } 
       let span = spans[this.value];
-      span.classList.add('slider__step-active');
+      
+        span.classList.add('slider__step-active');
+      
+      
+      console.log(this.value, this.elem)
       
       
 
