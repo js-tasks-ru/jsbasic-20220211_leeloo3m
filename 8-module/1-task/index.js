@@ -39,6 +39,45 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+    // убеждаемся что cart-icon есть на странице
+    let cartIcon =document.querySelector('.cart-icon');
+    let isVisible = cartIcon.offsetWidth > 0||cartIcon.offsetHeight > 0;
+    if(isVisible==false) {
+      return
+    }
+    //ширина окна браузера
+    let widthWindow = document.documentElement.clientWidth;
+    if(widthWindow<=767) {
+      return
+    }
+    //контейнер
+    let cont = document.querySelector('div.container');//988
+    // расстояние от верха корзины до окна браузера
+    let cartTop = cartIcon.getBoundingClientRect().top;
+    //сколько проскролили вниз
+    let scrollTop = document.documentElement.scrollTop;
+    //расстояние от верха контейнера до окна браузера
+    let contTop = cont.getBoundingClientRect().top;
+    //расстояние от низа корзины до верха браузера
+    let cartBottom = cartIcon.getBoundingClientRect().bottom;
+    //растояние до правого края контейнера
+    let contRight = cont.getBoundingClientRect().right;
+    //расстояние до левого края корзины
+    let cartLeft = cartIcon.getBoundingClientRect().left;
+    //расстояние между ними
+    let b = cartLeft-contRight;
+       
+    if (scrollTop>cartTop) {
+      cartIcon.style.position = 'fixed';
+      if(contTop<cartBottom) {
+        cartIcon.style.top = 50 + 'px';
+        cartIcon.style.right = 18.56 + 'px'; 
+      }
+
+    } else if (scrollTop<cartTop) {
+      cartIcon.style.position = 'absolute';
+    }
+   
+       
   }
 }
