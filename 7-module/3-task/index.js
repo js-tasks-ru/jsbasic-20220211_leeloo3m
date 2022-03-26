@@ -9,7 +9,7 @@ export default class StepSlider {
     
     this.span();
     this.changeVolume();
-    
+    this.activSpan();
   }
 
   makeHTML() {
@@ -19,7 +19,6 @@ export default class StepSlider {
   </div>
   <div class="slider__progress"></div>
   <div class="slider__steps">
-  <span class="slider__step-active"></span>
   </div>
 </div>
     `;
@@ -28,16 +27,21 @@ export default class StepSlider {
   span() {
     let sliderSteps = this.elem.querySelector('.slider__steps');
     let spans = Array.from(sliderSteps.querySelectorAll('span')).length;
-    let span = Array.from(sliderSteps.querySelectorAll('span'));
     
      while (spans < this.steps) {
       sliderSteps.insertAdjacentHTML('afterbegin', "<span></span>");
-      
+      this.activSpan();
       spans++;
     }
-    
-    
   }
+
+  activSpan(){
+    this.elem.addEventListener('click', ()=>{
+      let spanB = this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+      console.log(spanB)
+    })
+  }
+
   changeVolume() {
     
     this.elem.addEventListener('click', (event)=>{
@@ -53,18 +57,6 @@ export default class StepSlider {
       let sliderValue = this.elem.querySelector('.slider__value');
       sliderValue.innerHTML = this.value;
       let valuePercents = this.value / segments * 100;
-
-      let ss = this.elem.querySelector('.slider__steps').classList.add('slider__step-activ')
-      let el = ss.children;
-      for(let i of el) {
-        i.innerHTML
-      }
-      
-      
-      
-      console.log(this.value, this.elem)
-      
-      
 
       const customEvent = new CustomEvent('slider-change', { 
         detail: this.value, 

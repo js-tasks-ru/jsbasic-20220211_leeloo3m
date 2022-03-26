@@ -12,7 +12,7 @@ export default class ProductGrid {
     category: 'soups' // уникальный идентификатор категории товара
     };
     this.elem = createElement(this.makeHTML());
-    //this.updateFilter(this.filters);
+    //this.updateFilter();
     this.productCard();
     
   }
@@ -25,19 +25,20 @@ export default class ProductGrid {
 </div>
     `
   }
-  updateFilter(){
-    
-    let category = this.products.filter((item)=>item.category==`${this.filters.category}`);
-    
-    let maxSpiciness = this.products.filter((item)=>item.spiciness==`${this.filters.maxSpiciness}`);
-
-    let vegetarian = this.products.filter((item)=>item.vegeterian==`${this.filters.vegeterianOnly}`);
-
-    let noNuts = this.products.filter((item)=>item.nuts==`${this.filters.noNuts}`);
-    console.log(noNuts)
-   this.products=category;
-   this.productCard();
-  };
+  updateFilter(filters){
+    this.filters = Object.assign(this.filters, filters)
+   // let categ = this.products.filter((item)=>item.category==filters.category);
+    //this.products=categ;
+   // let maxSpiciness = this.products.filter((item)=>item.spiciness==filters.maxSpiciness);
+    //this.products+=maxSpiciness;
+    //let vegetarian = this.products.filter((item)=>item.vegeterian==filters.vegeterianOnly);
+    //this.products+=vegetarian;
+    //let noNuts = this.products.filter((item)=>item.nuts==filters.noNuts);
+    //this.products+=noNuts;
+    //console.log(maxSpiciness);
+   //this.productCard();
+  
+  }
   productCard(){
     let a = `${this.products.map(item=>`<div class="card">
     <div class="card__top">
