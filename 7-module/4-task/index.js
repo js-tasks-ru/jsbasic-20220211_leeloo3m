@@ -3,6 +3,7 @@ export default class StepSlider {
   constructor({ steps, value = 0 }) {
     this.elem = document.createElement('div');
     this.elem.classList.add('slider');
+    this.elem.innerHTML = this.makeHTML();
     this.steps = steps;
     this.value = value;
     this.makeHTML(); 
@@ -13,15 +14,14 @@ export default class StepSlider {
   }
 
   makeHTML() {
-    let a = `
+    return `
   <div class="slider__thumb">
     <span class="slider__value">0</span>
   </div>
   <div class="slider__progress"></div>
   <div class="slider__steps">  
   </div>
-    `
-    this.elem.innerHTML = a;   
+    `   
   }
 
   span() {

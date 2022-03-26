@@ -1,19 +1,19 @@
 export default class StepSlider {
   elem = null;
   constructor({ steps, value = 0 }) {
-    this.elem = document.createElement('div');
-    this.elem.classList.add('slider');
     this.steps = steps;
     this.value = value;
-    this.makeHTML(); 
+    this.elem = document.createElement('div');
+    this.elem.classList.add('slider');
+    this.elem.innerHTML = this.makeHTML();
+    
     this.span();
     this.changeVolume();
     
   }
 
   makeHTML() {
-    let a = `
-
+    return `
   <div class="slider__thumb">
     <span class="slider__value"></span>
   </div>
@@ -22,18 +22,17 @@ export default class StepSlider {
   <span class="slider__step-active"></span>
   </div>
 </div>
-    `
-    this.elem.innerHTML = a;
-    
+    `;
   }
 
   span() {
     let sliderSteps = this.elem.querySelector('.slider__steps');
     let spans = Array.from(sliderSteps.querySelectorAll('span')).length;
-    
+    let span = Array.from(sliderSteps.querySelectorAll('span'));
     
      while (spans < this.steps) {
       sliderSteps.insertAdjacentHTML('afterbegin', "<span></span>");
+      
       spans++;
     }
     
@@ -54,16 +53,13 @@ export default class StepSlider {
       let sliderValue = this.elem.querySelector('.slider__value');
       sliderValue.innerHTML = this.value;
       let valuePercents = this.value / segments * 100;
+
+      let ss = this.elem.querySelector('.slider__steps').classList.add('slider__step-activ')
+      let el = ss.children;
+      for(let i of el) {
+        i.innerHTML
+      }
       
-      let sliderSteps = this.elem.querySelector('.slider__steps');
-      let spans = Array.from(sliderSteps.querySelectorAll('span'));
-      spans[0].classList.add('slider__step-active');
-      if(this.value==-0){
-        this.value==0
-      } 
-      let span = spans[this.value];
-      
-        span.classList.add('slider__step-active');
       
       
       console.log(this.value, this.elem)
