@@ -26,7 +26,25 @@ export default class ProductGrid {
     `
   }
   updateFilter(filters){
-    this.filters = Object.assign(this.filters, filters)
+    
+    this.filters = Object.assign(this.filters, filters);
+    let filterValues = Object.entries(this.filters);
+    this.products;
+    for(let [filterKey, filterValue] of filterValues) {
+      if(filterKey=='category') {
+        filterKey='category';
+      } else if (filterKey=='noNuts'){
+        filterKey='nuts';
+      } else if (filterKey=='vegeterianOnly'){
+        filterKey='vegeterian';
+      } else if (filterKey=='maxSpiciness'){
+        filterKey='spiciness';
+      }
+      this.products = this.products.filter(obj =>obj[filterKey]===filterValue);
+      console.log(this.products)
+    }
+    this.productCard();
+   // let a = this.products.filter((o)=>Object.keys(this.filters).every((k)=>this.filters[k]===o[k]))
    // let categ = this.products.filter((item)=>item.category==filters.category);
     //this.products=categ;
    // let maxSpiciness = this.products.filter((item)=>item.spiciness==filters.maxSpiciness);

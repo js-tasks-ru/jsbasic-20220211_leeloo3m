@@ -39,45 +39,40 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // убеждаемся что cart-icon есть на странице
     let cartIcon =document.querySelector('.cart-icon');
-    let isVisible = cartIcon.offsetWidth > 0||cartIcon.offsetHeight > 0;
-    if(isVisible==false) {
-      return
-    }
-    //ширина окна браузера
-    let widthWindow = document.documentElement.clientWidth;
-    if(widthWindow<=767) {
-      return
-    }
-    //контейнер
-    let cont = document.querySelector('div.container');//988
-    // расстояние от верха корзины до окна браузера
-    let cartTop = cartIcon.getBoundingClientRect().top;
-    //сколько проскролили вниз
-    let scrollTop = document.documentElement.scrollTop;
-    //расстояние от верха контейнера до окна браузера
-    let contTop = cont.getBoundingClientRect().top;
-    //расстояние от низа корзины до верха браузера
-    let cartBottom = cartIcon.getBoundingClientRect().bottom;
-    //растояние до правого края контейнера
-    let contRight = cont.getBoundingClientRect().right;
-    //расстояние до левого края корзины
-    let cartLeft = cartIcon.getBoundingClientRect().left;
-    //расстояние между ними
-    let b = cartLeft-contRight;
-       
-    if (scrollTop>cartTop) {
+    
+    let initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
+    if (window.pageYOffset > initialTopCoord) {
       cartIcon.style.position = 'fixed';
-      if(contTop<cartBottom) {
-        cartIcon.style.top = 50 + 'px';
-        cartIcon.style.right = 18.56 + 'px'; 
-      }
-
-    } else if (scrollTop<cartTop) {
+    } else {
       cartIcon.style.position = 'absolute';
     }
+    
+    
+    let leftIndent = Math.min(
+      document.querySelector('.container').getBoundingClientRect().right + 20,
+      document.documentElement.clientWidth - this.elem.offsetWidth - 10
+    ) + 'px';
+    cartIcon.style.right = leftIndent;
+
+    Object.assign(this.elem.style, {
+      position: 'fixed',
+      top: '50px',
+      zIndex: 1e3,
+      right: '10px',
+      left: leftIndent
+    });
+
+    let isMobile = document.documentElement.clientWidth <= 767;
+
+    if (document.documentElement.clientWidth <= 767) {
+      Object.assign(this.elem.style, {
+        position: '',
+        top: '',
+        left: '',
+        zIndex: ''
+      });
+    }
    
-       
   }
 }
