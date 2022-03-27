@@ -28,34 +28,50 @@ export default class ProductGrid {
   updateFilter(filters){
     
     this.filters = Object.assign(this.filters, filters);
-    let filterValues = Object.entries(this.filters);
-    this.products;
-    for(let [filterKey, filterValue] of filterValues) {
-      if(filterKey=='category') {
-        filterKey='category';
-      } else if (filterKey=='noNuts'){
-        filterKey='nuts';
-      } else if (filterKey=='vegeterianOnly'){
-        filterKey='vegeterian';
-      } else if (filterKey=='maxSpiciness'){
-        filterKey='spiciness';
+    const filteredProducts = [];
+     
+    
+
+    for(let i = 0; i<this.products.length; i++){
+      
+      for (const product in this.products) {
+        //console.log()
+         
+          for (let fil in this.filters){
+            if(fil=='category') {
+              fil='category';
+            } else if (fil=='noNuts'){
+              fil='nuts';
+            } else if (fil=='vegeterianOnly'){
+              fil='vegeterian';
+            } else if (fil=='maxSpiciness'){
+              fil='spiciness';
+            }
+            //console.log(fil, this.filters[fil])
+            
+           if(product==fil) 
+      
+            continue;
+            //if(this.products[product][fil]==this.filters[fil]) 
+            console.log(this.products[product][fil]);
+            //filteredProducts.push(this.products[i][fil])
+            continue;
+
+          
+            
+            
+            //
+          }
+          
+          }
+          
       }
-      this.products = this.products.filter(obj =>obj[filterKey]===filterValue);
-      console.log(this.products)
-    }
-    this.productCard();
-   // let a = this.products.filter((o)=>Object.keys(this.filters).every((k)=>this.filters[k]===o[k]))
-   // let categ = this.products.filter((item)=>item.category==filters.category);
-    //this.products=categ;
-   // let maxSpiciness = this.products.filter((item)=>item.spiciness==filters.maxSpiciness);
-    //this.products+=maxSpiciness;
-    //let vegetarian = this.products.filter((item)=>item.vegeterian==filters.vegeterianOnly);
-    //this.products+=vegetarian;
-    //let noNuts = this.products.filter((item)=>item.nuts==filters.noNuts);
-    //this.products+=noNuts;
-    //console.log(maxSpiciness);
-   //this.productCard();
-  
+    
+     // console.log(filteredProducts)
+    
+
+
+   
   }
   productCard(){
     let a = `${this.products.map(item=>`<div class="card">

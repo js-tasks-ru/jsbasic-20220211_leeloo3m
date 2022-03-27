@@ -30,8 +30,16 @@ export default class StepSlider {
     
      while (spans < this.steps) {
       sliderSteps.insertAdjacentHTML('afterbegin', "<span></span>");
+      this.activSpan();
       spans++;
     }
+  }
+  activSpan(){
+    this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+    this.elem.addEventListener('click', ()=>{
+      let spanB = this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+      console.log(spanB)
+    })
   }
   
   changeVolume() {
@@ -51,13 +59,8 @@ export default class StepSlider {
       let valuePercents = this.value / segments * 100;
       
       let sliderSteps = this.elem.querySelector('.slider__steps');
-      let spans = Array.from(sliderSteps.querySelectorAll('span'));
-      
-      let span = spans[this.value];
-      span.classList.add('slider__step-active');
-      
-      
-
+     
+    
       const customEvent = new CustomEvent('slider-change', { 
         detail: this.value, 
         bubbles: true 

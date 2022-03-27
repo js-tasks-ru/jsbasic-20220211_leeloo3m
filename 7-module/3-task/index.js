@@ -6,10 +6,9 @@ export default class StepSlider {
     this.elem = document.createElement('div');
     this.elem.classList.add('slider');
     this.elem.innerHTML = this.makeHTML();
-    
     this.span();
     this.changeVolume();
-    this.activSpan();
+    
   }
 
   makeHTML() {
@@ -36,6 +35,7 @@ export default class StepSlider {
   }
 
   activSpan(){
+    this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
     this.elem.addEventListener('click', ()=>{
       let spanB = this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
       console.log(spanB)
