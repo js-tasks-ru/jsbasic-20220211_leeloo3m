@@ -28,46 +28,40 @@ export default class ProductGrid {
   updateFilter(filters){
     
     this.filters = Object.assign(this.filters, filters);
-    const filteredProducts = [];
+    let filteredProducts = [];
      
     
 
     for(let i = 0; i<this.products.length; i++){
       
-      for (const product in this.products) {
-        //console.log()
+      for (const product in this.products[i]) {
+        //console.log(this.products[i].name)
+        if(this.products[i].category==this.filters.category){
+          //continue;
+        filteredProducts.push(this.products[i])}
+        //console.log(product)
          
-          for (let fil in this.filters){
-            if(fil=='category') {
-              fil='category';
-            } else if (fil=='noNuts'){
-              fil='nuts';
-            } else if (fil=='vegeterianOnly'){
-              fil='vegeterian';
-            } else if (fil=='maxSpiciness'){
-              fil='spiciness';
-            }
-            //console.log(fil, this.filters[fil])
-            
-           if(product==fil) 
-      
-            continue;
-            //if(this.products[product][fil]==this.filters[fil]) 
-            console.log(this.products[product][fil]);
-            //filteredProducts.push(this.products[i][fil])
-            continue;
+         if(this.products[i].nuts==this.filters.noNuts)
+         filteredProducts.push(this.products[i])
+        // continue;
+         if(this.products[i].vegeterian==this.filters.vegeterianOnly)
+         filteredProducts.push(this.products[i])
+        // continue;
+         if(this.products[i].spiciness==this.filters.maxSpiciness)
+         filteredProducts.push(this.products[i])
+        // continue;
+         //console.log(this.products[i])
+         //filteredProducts.push(this.products)
 
-          
-            
-            
-            //
-          }
+         
           
           }
           
       }
     
-     // console.log(filteredProducts)
+    //console.log(filteredProducts)
+     this.products=filteredProducts;
+     this.productCard()
     
 
 
