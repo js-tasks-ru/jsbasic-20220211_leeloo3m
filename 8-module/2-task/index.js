@@ -8,7 +8,7 @@ export default class ProductGrid {
     this.filters = {
     noNuts: true, // true/false
     vegeterianOnly: false, // true/false
-    maxSpiciness: 3, // числа от 0 до 4
+    maxSpiciness: 2, // числа от 0 до 4
     category: 'soups' // уникальный идентификатор категории товара
     };
     this.elem = createElement(this.makeHTML());
@@ -32,36 +32,27 @@ export default class ProductGrid {
      
     
 
-    for(let i = 0; i<this.products.length; i++){
+   // for(let i = 0; i<this.products.length; i++){
       
-      for (const product in this.products[i]) {
+      for (let product in this.products) {
+        
         //console.log(this.products[i].name)
-        if(this.products[i].category==this.filters.category){
-          //continue;
-        filteredProducts.push(this.products[i])}
-        //console.log(product)
+        if(this.filters.noNuts&&product.nuts)
+         { continue;}
          
-         if(this.products[i].nuts==this.filters.noNuts)
-         filteredProducts.push(this.products[i])
-        // continue;
-         if(this.products[i].vegeterian==this.filters.vegeterianOnly)
-         filteredProducts.push(this.products[i])
-        // continue;
-         if(this.products[i].spiciness==this.filters.maxSpiciness)
-         filteredProducts.push(this.products[i])
-        // continue;
-         //console.log(this.products[i])
-         //filteredProducts.push(this.products)
-
-         
-          
-          }
+        if(this.filters.vegeterianOnly&&!product.vegeterian)
+        { continue;}
+        
+        if(this.filters.maxSpiciness!==undefined&&product.spiciness>this.filters.maxSpiciness)
+        { continue;}
+        
+        if(this.filters.category&&product.category!=this.filters.category)
+        { continue;}
+        
+        
           
       }
     
-    //console.log(filteredProducts)
-     this.products=filteredProducts;
-     this.productCard()
     
 
 
