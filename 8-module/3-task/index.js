@@ -72,7 +72,7 @@ export default class Cart {
   getTotalPrice() {
     //Возвращает стоимость всех товаров в корзине. Для этого нужно сложить все цены товаров с учетом количества каждого из них. Цену товара можно найти в свойстве price объекта товара.
     let totalPrice = 0;
-  console.log(this.cartItems)
+  
     this.cartItems.forEach(cartItem=>{
       
       return totalPrice+=cartItem.count*cartItem.product.price;
@@ -83,7 +83,7 @@ export default class Cart {
   onProductUpdate(cartItem) {
    
     //console.log(totalPrice);
-    
+    console.log(this.cartItems)
      if(document.querySelector('body').classList.contains('is-modal-open')){
       let productId = cartItem.id;
       let modalBody = this.renderModal();

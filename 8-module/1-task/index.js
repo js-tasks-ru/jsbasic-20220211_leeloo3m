@@ -42,36 +42,29 @@ export default class CartIcon {
    
     
     if (window.pageYOffset > 50) {
-      this.elem.style.position = 'fixed';
-    } else {
-      this.elem.style.position = 'absolute';
-    }
-    
-    
-    let leftIndent = Math.min(
-      document.querySelector('.container').getBoundingClientRect().right + 20,
-      document.documentElement.clientWidth - this.elem.offsetWidth - 10
-    ) + 'px';
-    this.elem.style.right = leftIndent;
+      let leftIndent = Math.min(
+        document.querySelector('.container').getBoundingClientRect().right + 20,
+        document.documentElement.clientWidth - this.elem.offsetWidth - 10
+      ) + 'px';
+      this.elem.style.right = leftIndent;
 
-    Object.assign(this.elem.style, {
-      position: 'fixed',
-      top: '50px',
-      zIndex: 1e3,
-      right: '10px',
-      left: leftIndent
-    });
-
-    let isMobile = document.documentElement.clientWidth <= 767;
-
-    if (document.documentElement.clientWidth <= 767) {
       Object.assign(this.elem.style, {
-        position: '',
-        top: '',
-        left: '',
-        zIndex: ''
+        position: 'fixed',
+        top: '50px',
+        zIndex: 1e3,
+        right: '10px',
+        left: leftIndent
       });
+    } else {
+      if (document.documentElement.clientWidth <= 767) {
+        Object.assign(this.elem.style, {
+          position: '',
+          top: '',
+          left: '',
+          zIndex: ''
+        });
+      }
     }
-   
+    
   }
 }
