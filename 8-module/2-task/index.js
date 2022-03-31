@@ -6,15 +6,11 @@ export default class ProductGrid {
   constructor(products) {
     this.products = products;
     this.filters = {
-    noNuts: true, // true/false
-    vegeterianOnly: false, // true/false
-    maxSpiciness: 2, // числа от 0 до 4
-    category: 'soups' // уникальный идентификатор категории товара
+     
     };
     this.elem = createElement(this.makeHTML());
-    //this.updateFilter();
     this.productCard();
-    
+   
   }
   makeHTML(){
     return `
@@ -29,30 +25,26 @@ export default class ProductGrid {
     
     this.filters = Object.assign(this.filters, filters);
     let filteredProducts = [];
-     
-    
-
-   // for(let i = 0; i<this.products.length; i++){
-      
+  
       for (let product in this.products) {
-        
-        //console.log(this.products[i].name)
-        if(this.filters.noNuts&&product.nuts)
+       
+        if(this.filters.noNuts&&this.products[product].nuts)
          { continue;}
          
-        if(this.filters.vegeterianOnly&&!product.vegeterian)
+        if(this.filters.vegeterianOnly&&!this.products[product].vegeterian)
         { continue;}
         
-        if(this.filters.maxSpiciness!==undefined&&product.spiciness>this.filters.maxSpiciness)
+        if(this.filters.maxSpiciness!==undefined&&this.products[product].spiciness>this.filters.maxSpiciness)
         { continue;}
         
-        if(this.filters.category&&product.category!=this.filters.category)
+        if(this.filters.category&&this.products[product].category!=this.filters.category)
         { continue;}
-        filteredProducts.push(product);
+        
+        filteredProducts.push(this.products[product]);
 
       }
-   
-      let a = `${this.filteredProducts.map(item=>`<div class="card">
+    
+      let a = `${filteredProducts.map(item=>`<div class="card">
       <div class="card__top">
           <img src="/assets/images/products/${item.image}" class="card__image" alt="product">
           <span class="card__price">€${item.price.toFixed(2)}</span>
@@ -66,11 +58,8 @@ export default class ProductGrid {
   </div>`).join('')}`
       this.elem.querySelector('.products-grid__inner').innerHTML = a; 
     
-    
-
-
-   
   }
+
   productCard(){
     let a = `${this.products.map(item=>`<div class="card">
     <div class="card__top">

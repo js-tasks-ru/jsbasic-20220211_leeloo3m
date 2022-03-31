@@ -15,37 +15,35 @@ export default class Cart {
     //this.updateProductCount();
     //this.isEmpty();
    // this.getTotalCount();
-    //this.getTotalPrice();
-   // this.renderProduct();
+   // this.getTotalPrice();
+   //this.renderProduct();
     //this.renderOrderForm();
-    
+   // this.renderModal();
     
   }
 
   addProduct(product) {
     if(product==null||product.length==0||product==undefined){
-     return
-      }
-
-    let foundProduct = this.cartItems.some(item=>item.id==product.id);
-    let cartItem = {
-      product: product,
-      count: 1
-    };
-    
-     if(foundProduct==false){
-      this.cartItems.push(cartItem);
-    } else if(foundProduct==true) {
-      let cartItem = this.cartItems.find(cart=>cart.id==product.id);
-      cartItem.count++;
-    };
+      return
+       }    
+     let cartItem = {
+       product: product,
+       count: 1
+     };
+     let foundProduct = this.cartItems.some(item=>item.product.id==product.id);
+ 
+      if(foundProduct==false){
+       this.cartItems.push(cartItem);
+     } else if(foundProduct==true) {
+       cartItem.count++;
+     };
     
    this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
     let cartItem = this.cartItems.find(cartItem=>{
-      cartItem.id==productId
+      cartItem.product.id==productId
     });
    
         if(amount==1){
@@ -90,6 +88,7 @@ export default class Cart {
        
        return totalPrice+=cart.count*cart.product.price;
      })
+     //console.log(totalPrice)
      
   }
 
@@ -148,18 +147,20 @@ export default class Cart {
   renderModal() {
 
   let modal = new Modal();
+   modal.open();
    modal.setTitle('Your order');   
    let node = createElement(`
           <div>
-          ${this.cartItems.forEach(cartItem=>{
+          ${this.cartItems.forEach(cartItem=>
             renderProduct(cartItem, count)
-          })}
+          )}
         
-          ${renderOrderForm()}
+          ${this.renderOrderForm()}
         </div>
           `);
    modal.setBody(node);
-   modal.open();
+   
+   console.log(modal)
 
    let btnMinus = this.cartIcon.querySelector('.cart-counter__button cart-counter__button_minus');
    let btnPlus = this.cartIcon.querySelector('.cart-counter__button cart-counter__button_plus');
@@ -183,10 +184,10 @@ export default class Cart {
 
   onProductUpdate(cartItem) {
     
-    this.isEmpty();
+   
 
     if(document.querySelector('body').classList.contains('is-modal-open')){
-      let productId = cartItem.id;
+      let productId = cartItem.product.id;
       let modalBody = this.renderModal();
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
@@ -196,7 +197,7 @@ export default class Cart {
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice}`;
 
-    }
+    } 
 
     this.cartIcon.update(this);
   }

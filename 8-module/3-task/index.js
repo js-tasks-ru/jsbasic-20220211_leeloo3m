@@ -6,26 +6,24 @@ export default class Cart {
     this.cartIcon = cartIcon;
     //this.addProduct();
     //this.updateProductCount();
-    //this.isEmpty();
-    //this.getTotalCount();
+    this.isEmpty();
+    this.getTotalCount();
     this.getTotalPrice();
   }
 
   addProduct(product) {
     if(product==null||product.length==0||product==undefined){
      return
-      }
-
-    let foundProduct = this.cartItems.some(item=>item.id==product.id);
+      }    
     let cartItem = {
       product: product,
       count: 1
     };
-    
+    let foundProduct = this.cartItems.some(item=>item.product.id==product.id);
+
      if(foundProduct==false){
       this.cartItems.push(cartItem);
     } else if(foundProduct==true) {
-      let cartItem = this.cartItems.find(cart=>cart.id==product.id);
       cartItem.count++;
     };
     
@@ -41,6 +39,7 @@ export default class Cart {
           cartItem.count++;
         } else if(amount==-1){
           cartItem.count--;
+          
           if(cartItem.count==0){
             let i = this.cartItems.indexOf(cartItem);
             this.cartItems.splice(i, 1);
@@ -81,12 +80,14 @@ export default class Cart {
   }
 
   onProductUpdate(cartItem) {
-   
+    console.log(cartItem.product.price.toFixed(2))
     //console.log(totalPrice);
-    console.log(this.cartItems)
+    
+    
      if(document.querySelector('body').classList.contains('is-modal-open')){
-      let productId = cartItem.id;
+      let productId = cartItem.product.id;
       let modalBody = this.renderModal();
+     
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
@@ -95,8 +96,6 @@ export default class Cart {
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice}`;
 
-    } else {
-      return
     }
     this.cartIcon.update(this);
 
