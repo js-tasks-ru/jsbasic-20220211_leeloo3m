@@ -4,56 +4,51 @@ export default class Cart {
   constructor(cartIcon) {
     
     this.cartIcon = cartIcon;
-    this.addProduct();
-    this.updateProductCount();
-    this.isEmpty();
-    this.getTotalCount();
+    //this.addProduct();
+    //this.updateProductCount();
+    //this.isEmpty();
+    //this.getTotalCount();
     this.getTotalPrice();
   }
 
   addProduct(product) {
-    let foundProduct = this.cartItems.some(item=>item.id==product.id);
-    let obj = {};
-    obj.product=product;
-    obj.count = 1;
-
     if(product==null||product.length==0||product==undefined){
-      try {
-        this.addProduct();
+     return
       }
-      catch (e) {
-        //error
-      }
-      return;
-    }else if(foundProduct==false){
-      this.cartItems.push(obj);
-    } else if(foundProduct==true) {
-      let cart = this.cartItems.find(cart=>cart.id==product.id);
-      cart.count++;
-    }
+
+    let foundProduct = this.cartItems.some(item=>item.id==product.id);
+    let cartItem = {
+      product: product,
+      count: 1
+    };
     
-   this.onProductUpdate(this.cartItems);
+     if(foundProduct==false){
+      this.cartItems.push(cartItem);
+    } else if(foundProduct==true) {
+      let cartItem = this.cartItems.find(cart=>cart.id==product.id);
+      cartItem.count++;
+    };
+    
+   this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
+    let cartItem = this.cartItems.find(cartItem=>
+       cartItem.product.id==productId
+      );
    
-    this.cartItems.forEach(cart=>{
-      if(cart.product.id==productId){
         if(amount==1){
-          cart.count++;
-
+          cartItem.count++;
         } else if(amount==-1){
-          cart.count--;
-          if(cart.count==0){
-            let i = this.cartItems.indexOf(cart);
+          cartItem.count--;
+          if(cartItem.count==0){
+            let i = this.cartItems.indexOf(cartItem);
             this.cartItems.splice(i, 1);
-          }
+          } 
         }
-      }
-      
-    })
-    this.onProductUpdate(this.cartItems);
-    //console.log(this.cartItems);
+   // this.getTotalPrice();
+   this.onProductUpdate(cartItem);
+   // console.log(this.cartItems);
   }
 
   isEmpty() {
@@ -68,8 +63,8 @@ export default class Cart {
   getTotalCount() {
     // Возвращает общее количество товаров в корзине. Обратите внимание, что один товар может быть добавлен несколько раз и это нужно учесть.
       let totalCount = 0;
-     this.cartItems.forEach(cart=>{
-       return totalCount+=cart.count;
+     this.cartItems.forEach(cartItem=>{
+       return totalCount+=cartItem.count;
      })
      //console.log(this.cartItems)
   }
@@ -77,15 +72,34 @@ export default class Cart {
   getTotalPrice() {
     //Возвращает стоимость всех товаров в корзине. Для этого нужно сложить все цены товаров с учетом количества каждого из них. Цену товара можно найти в свойстве price объекта товара.
     let totalPrice = 0;
-    this.cartItems.forEach(cart=>{
-      return totalPrice+=cart.count*cart.product.price;
+  console.log(this.cartItems)
+    this.cartItems.forEach(cartItem=>{
+      
+      return totalPrice+=cartItem.count*cartItem.product.price;
     })
+    
   }
 
   onProductUpdate(cartItem) {
-    // реализуем в следующей задаче
+   
+    //console.log(totalPrice);
+    
+     if(document.querySelector('body').classList.contains('is-modal-open')){
+      let productId = cartItem.id;
+      let modalBody = this.renderModal();
+      let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+      let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
+      productCount.innerHTML = cartItem.count;
+      productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice}`;
+
+    } else {
+      return
+    }
     this.cartIcon.update(this);
+
   }
 }
 

@@ -39,13 +39,12 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    let cartIcon =document.querySelector('.cart-icon');
+   
     
-    let initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
-    if (window.pageYOffset > initialTopCoord) {
-      cartIcon.style.position = 'fixed';
+    if (window.pageYOffset > 50) {
+      this.elem.style.position = 'fixed';
     } else {
-      cartIcon.style.position = 'absolute';
+      this.elem.style.position = 'absolute';
     }
     
     
@@ -53,7 +52,7 @@ export default class CartIcon {
       document.querySelector('.container').getBoundingClientRect().right + 20,
       document.documentElement.clientWidth - this.elem.offsetWidth - 10
     ) + 'px';
-    cartIcon.style.right = leftIndent;
+    this.elem.style.right = leftIndent;
 
     Object.assign(this.elem.style, {
       position: 'fixed',
