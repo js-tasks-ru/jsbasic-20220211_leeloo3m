@@ -36,6 +36,7 @@ export default class StepSlider {
 
   activSpan(){
     this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+    
     this.elem.addEventListener('click', ()=>{
       let spanB = this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
       console.log(spanB)

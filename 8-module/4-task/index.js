@@ -11,14 +11,7 @@ export default class Cart {
     
 
     this.addEventListeners();
-   // this.addProduct();
-    //this.updateProductCount();
-    //this.isEmpty();
-   // this.getTotalCount();
-   // this.getTotalPrice();
-   //this.renderProduct();
-    //this.renderOrderForm();
-   // this.renderModal();
+ 
     
   }
 
@@ -55,15 +48,12 @@ export default class Cart {
             this.cartItems.splice(i, 1);
           } 
         }
-   // this.getTotalPrice();
-   this.onProductUpdate(cartItem);
-   // console.log(this.cartItems);
-  }
 
+  this.onProductUpdate(cartItem);
   
-
+  }
   isEmpty() {
-    // Возвращает true если корзина пустая и false если в корзине есть хотя бы один товар.
+  
     if(this.cartItems.length==0) {
       return true;
     } else {
@@ -72,7 +62,6 @@ export default class Cart {
   }
 
   getTotalCount() {
-     // Возвращает общее количество товаров в корзине. Обратите внимание, что один товар может быть добавлен несколько раз и это нужно учесть.
      let totalCount = 0;
      this.cartItems.forEach(cart=>{
        return totalCount+=cart.count;
@@ -81,19 +70,13 @@ export default class Cart {
   }
 
   getTotalPrice() {
-     //Возвращает стоимость всех товаров в корзине. Для этого нужно сложить все цены товаров с учетом количества каждого из них. Цену товара можно найти в свойстве price объекта товара.
      let totalPrice = 0;
-     //console.log(this.cartItems)
      this.cartItems.forEach(cart=>{
-       
        return totalPrice+=cart.count*cart.product.price;
      })
-     //console.log(totalPrice)
-     
   }
 
   renderProduct(product, count) {
-    //console.log(product)
     return createElement(`
     <div class="cart-product" data-product-id="${
       product.id
@@ -134,9 +117,7 @@ export default class Cart {
         <div class="cart-buttons__buttons btn-group">
           <div class="cart-buttons__info">
             <span class="cart-buttons__info-text">total</span>
-            <span class="cart-buttons__info-price">€${this.getTotalPrice().toFixed(
-              2
-            )}</span>
+            <span class="cart-buttons__info-price">€${this.getTotalPrice.toFixed(2)}</span>
           </div>
           <button type="submit" class="cart-buttons__button btn-group__button button">order</button>
         </div>
@@ -147,55 +128,55 @@ export default class Cart {
   renderModal() {
 
   let modal = new Modal();
-   modal.open();
-   modal.setTitle('Your order');   
-   let node = createElement(`
-          <div>
-          ${this.cartItems.forEach(cartItem=>
-            renderProduct(cartItem, count)
-          )}
-        
-          ${this.renderOrderForm()}
-        </div>
-          `);
-   modal.setBody(node);
+  modal.setTitle('Your order');  
+  
+  let node = createElement(`<div></div`);
+  for(let i = 0; i<this.cartItems.length; i++){
+    node.append(this.renderProduct(this.cartItems[i].product, this.cartItems[i].count));
+  }
+  
+  node.append(this.renderOrderForm())
+  modal.setBody(node);
+  modal.open();
+
+  let btnM = document.querySelector('.cart-counter__button_minus');
+  let btnP = document.querySelector('.cart-counter__button_plus');
    
-   console.log(modal)
 
-   let btnMinus = this.cartIcon.querySelector('.cart-counter__button cart-counter__button_minus');
-   let btnPlus = this.cartIcon.querySelector('.cart-counter__button cart-counter__button_plus');
+  btnM.addEventListener('click', (event)=>{
+    let target = btnM.closest('[data-product-id]').dataset.productId;
+    let amount = -1;
+    this.updateProductCount(target, amount);
 
-   btnMinus.addEventListeners('click', (event)=>{
-     let productId = event.target.dataset.productId;
-     let amount = -1;
-    this.updateProductCount(productId, amount);
    });
-   btnPlus.addEventListeners('click', (event)=>{
-    let productId = event.target.dataset.productId;
+
+  btnP.addEventListener('click', (event)=>{
+    btnP.closest('[data-product-id]').dataset.productId;
     let amount = 1;
-    this.updateProductCount(productId, amount);
-   });
+    this.updateProductCount(target, amount);
+  });
 
-   let form =  modal.querySelector('.cart-form');
-   form.addEventListeners('submit', this.onSubmit);
+
    
 
+   let form =  document.querySelector('.cart-form');
+  
+   form.addEventListener('submit', this.onSubmit);
+  
   }
 
   onProductUpdate(cartItem) {
     
-   
-
     if(document.querySelector('body').classList.contains('is-modal-open')){
       let productId = cartItem.product.id;
-      let modalBody = this.renderModal();
+      let modalBody = document.querySelector('.modal__body');
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
-      infoPrice.innerHTML = `€${this.getTotalPrice}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice.toFixed(2)}`;
 
     } 
 
@@ -204,22 +185,23 @@ export default class Cart {
 
   onSubmit(event) {
     event.preventDefault();
-    this.cartIcon.querySelector('button[type="submit"]').classList.add('is-loading');
-    let form = this.cartIcon.querySelector('.cart-form');
-    let formData = new FormData(form);
-    fetch("https://httpbin.org/post", {
-      method: "post",
+    document.querySelector('button[type="submit"]').classList.add('is-loading');
+    let form = document.querySelector('.cart-form');
+  
+    let response = fetch("https://httpbin.org/post", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
-      body: formData
+      body: new FormData(form)
   
     })
-    
-    .then(response=> {
-      this.modal.setTitle('Success!');
+  
+   if(response.ok) {
+      document.querySelector('.modal__title').textContent= 'Success!';
       this.cartItems.splice(0, this.cartItems.length);
-      this.modal.setBody(node);
+      document.querySelector('.modal__body').innerHTML = '';
+      document.querySelector('.modal__body').append(node);
         let node = createElement(`
         <div class="modal__body-inner">
         <p>
@@ -230,7 +212,7 @@ export default class Cart {
       </div>
         `);
 
-    })
+    }
     
   };
 

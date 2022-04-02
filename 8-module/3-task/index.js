@@ -4,11 +4,7 @@ export default class Cart {
   constructor(cartIcon) {
     
     this.cartIcon = cartIcon;
-    //this.addProduct();
-    //this.updateProductCount();
-    this.isEmpty();
-    this.getTotalCount();
-    this.getTotalPrice();
+   
   }
 
   addProduct(product) {
@@ -26,7 +22,6 @@ export default class Cart {
     } else if(foundProduct==true) {
       cartItem.count++;
     };
-    
    this.onProductUpdate(cartItem);
   }
 
@@ -34,7 +29,7 @@ export default class Cart {
     let cartItem = this.cartItems.find(cartItem=>
        cartItem.product.id==productId
       );
-   
+   console.log(cartItem)
         if(amount==1){
           cartItem.count++;
         } else if(amount==-1){
@@ -45,13 +40,13 @@ export default class Cart {
             this.cartItems.splice(i, 1);
           } 
         }
-   // this.getTotalPrice();
+   
    this.onProductUpdate(cartItem);
-   // console.log(this.cartItems);
+   
   }
 
   isEmpty() {
-    // Возвращает true если корзина пустая и false если в корзине есть хотя бы один товар.
+    
     if(this.cartItems.length==0) {
       return true;
     } else {
@@ -60,43 +55,35 @@ export default class Cart {
   }
 
   getTotalCount() {
-    // Возвращает общее количество товаров в корзине. Обратите внимание, что один товар может быть добавлен несколько раз и это нужно учесть.
       let totalCount = 0;
      this.cartItems.forEach(cartItem=>{
-       return totalCount+=cartItem.count;
+       return totalCount += cartItem.count;
      })
-     //console.log(this.cartItems)
   }
 
   getTotalPrice() {
-    //Возвращает стоимость всех товаров в корзине. Для этого нужно сложить все цены товаров с учетом количества каждого из них. Цену товара можно найти в свойстве price объекта товара.
     let totalPrice = 0;
-  
-    this.cartItems.forEach(cartItem=>{
-      
-      return totalPrice+=cartItem.count*cartItem.product.price;
+    this.cartItems.forEach(cartItem=>{ 
+      return totalPrice += cartItem.count * cartItem.product.price;
     })
     
   }
 
   onProductUpdate(cartItem) {
-    console.log(cartItem.product.price.toFixed(2))
-    //console.log(totalPrice);
-    
-    
-     if(document.querySelector('body').classList.contains('is-modal-open')){
+   
+    if(document.querySelector('body').classList.contains('is-modal-open')){
       let productId = cartItem.product.id;
-      let modalBody = this.renderModal();
-     
+      let modalBody = document.querySelector('.modal__body');
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
-      infoPrice.innerHTML = `€${this.getTotalPrice}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice.toFixed(2)}`;
 
-    }
+    } 
+
     this.cartIcon.update(this);
 
   }
