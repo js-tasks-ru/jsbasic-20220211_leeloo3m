@@ -26,10 +26,10 @@ export default class Cart {
   }
 
   updateProductCount(productId, amount) {
-    let cartItem = this.cartItems.find(cartItem=>
-       cartItem.product.id==productId
-      );
-   console.log(cartItem)
+    let cartItem = this.cartItems.find(cartItem=>{
+       return cartItem.product.id==productId
+    });
+  
         if(amount==1){
           cartItem.count++;
         } else if(amount==-1){
@@ -59,6 +59,7 @@ export default class Cart {
      this.cartItems.forEach(cartItem=>{
        return totalCount += cartItem.count;
      })
+     return totalCount;
   }
 
   getTotalPrice() {
@@ -66,26 +67,31 @@ export default class Cart {
     this.cartItems.forEach(cartItem=>{ 
       return totalPrice += cartItem.count * cartItem.product.price;
     })
-    
+    return totalPrice;
   }
 
   onProductUpdate(cartItem) {
-   
+    this.cartIcon.update(this);
     if(document.querySelector('body').classList.contains('is-modal-open')){
       let productId = cartItem.product.id;
       let modalBody = document.querySelector('.modal__body');
+      
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
-      infoPrice.innerHTML = `€${this.getTotalPrice.toFixed(2)}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+      let fullCount = this.getTotalCount();
+      console.log( productPrice, infoPrice)
+      if(fullCount==0){
+        
+        document.querySelector('.modal').remove();
+      }
 
     } 
-
-    this.cartIcon.update(this);
-
   }
 }
 

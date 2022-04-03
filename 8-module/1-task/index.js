@@ -3,6 +3,7 @@ import createElement from '../../assets/lib/create-element.js';
 export default class CartIcon {
   constructor() {
     this.render();
+    
 
     this.addEventListeners();
   }

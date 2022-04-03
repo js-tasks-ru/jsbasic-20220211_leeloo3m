@@ -8,10 +8,8 @@ export default class Cart {
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-    
-
+   // this.onProductUpdate();
     this.addEventListeners();
- 
     
   }
 
@@ -36,7 +34,8 @@ export default class Cart {
 
   updateProductCount(productId, amount) {
     let cartItem = this.cartItems.find(cartItem=>{
-      cartItem.product.id==productId
+    
+     return cartItem.product.id==productId
     });
    
         if(amount==1){
@@ -66,14 +65,17 @@ export default class Cart {
      this.cartItems.forEach(cart=>{
        return totalCount+=cart.count;
      })
+     return totalCount;
      //console.log(this.cartItems)
   }
 
   getTotalPrice() {
+    
      let totalPrice = 0;
      this.cartItems.forEach(cart=>{
        return totalPrice+=cart.count*cart.product.price;
      })
+    return totalPrice;
   }
 
   renderProduct(product, count) {
@@ -117,7 +119,7 @@ export default class Cart {
         <div class="cart-buttons__buttons btn-group">
           <div class="cart-buttons__info">
             <span class="cart-buttons__info-text">total</span>
-            <span class="cart-buttons__info-price">€${this.getTotalPrice.toFixed(2)}</span>
+            <span class="cart-buttons__info-price">€${this.getTotalPrice().toFixed(2)}</span>
           </div>
           <button type="submit" class="cart-buttons__button btn-group__button button">order</button>
         </div>
@@ -128,7 +130,9 @@ export default class Cart {
   renderModal() {
 
   let modal = new Modal();
+  modal.open();
   modal.setTitle('Your order');  
+  
   
   let node = createElement(`<div></div`);
   for(let i = 0; i<this.cartItems.length; i++){
@@ -137,7 +141,6 @@ export default class Cart {
   
   node.append(this.renderOrderForm())
   modal.setBody(node);
-  modal.open();
 
   let btnM = document.querySelector('.cart-counter__button_minus');
   let btnP = document.querySelector('.cart-counter__button_plus');
@@ -151,13 +154,10 @@ export default class Cart {
    });
 
   btnP.addEventListener('click', (event)=>{
-    btnP.closest('[data-product-id]').dataset.productId;
+    let target = btnP.closest('[data-product-id]').dataset.productId;
     let amount = 1;
     this.updateProductCount(target, amount);
   });
-
-
-   
 
    let form =  document.querySelector('.cart-form');
   
@@ -166,21 +166,27 @@ export default class Cart {
   }
 
   onProductUpdate(cartItem) {
-    
+    this.cartIcon.update(this);
     if(document.querySelector('body').classList.contains('is-modal-open')){
       let productId = cartItem.product.id;
       let modalBody = document.querySelector('.modal__body');
+      
       let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      
       let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
-      infoPrice.innerHTML = `€${this.getTotalPrice.toFixed(2)}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+      let fullCount = this.getTotalCount();
+     
+      if(fullCount==0){
+        
+        document.querySelector('.modal').remove();
+      }
 
     } 
-
-    this.cartIcon.update(this);
   }
 
   onSubmit(event) {
@@ -218,6 +224,7 @@ export default class Cart {
 
   addEventListeners() {
     this.cartIcon.elem.onclick = () => this.renderModal();
+  
   }
 }
 
