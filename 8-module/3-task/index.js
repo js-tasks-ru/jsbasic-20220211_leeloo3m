@@ -82,13 +82,23 @@ export default class Cart {
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
+      if(cartItem.count==0){
+        document.querySelector(`[data-product-id="${productId}"]`).remove()
+      }
+   
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
       let fullCount = this.getTotalCount();
-      console.log( productPrice, infoPrice)
+     
       if(fullCount==0){
         
-       this.modal.close();
+        let body = document.querySelector('body');
+        body.classList.remove('is-modal-open');
+        let modal = document.querySelector('.modal');
+        if (!modal) {
+          return
+        }
+        modal.remove();
       }
 
     } 

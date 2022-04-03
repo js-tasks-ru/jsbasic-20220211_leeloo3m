@@ -37,14 +37,18 @@ export default class Cart {
     
      return cartItem.product.id==productId
     });
-   
+    
+
         if(amount==1){
           cartItem.count++;
         } else if(amount==-1){
           cartItem.count--;
           if(cartItem.count==0){
             let i = this.cartItems.indexOf(cartItem);
+            
             this.cartItems.splice(i, 1);
+           
+            //console.log(this.cartItems)
           } 
         }
 
@@ -142,22 +146,24 @@ export default class Cart {
   node.append(this.renderOrderForm())
   modal.setBody(node);
 
-  let btnM = document.querySelector('.cart-counter__button_minus');
-  let btnP = document.querySelector('.cart-counter__button_plus');
-   
+  let btnM = document.querySelectorAll('.cart-counter__button_minus');
+  let btnP = document.querySelectorAll('.cart-counter__button_plus');
 
-  btnM.addEventListener('click', (event)=>{
-    let target = btnM.closest('[data-product-id]').dataset.productId;
+  btnM.forEach(btnMinus=> btnMinus.addEventListener('click', (event)=>{
+    let productId = btnMinus.closest('[data-product-id]').dataset.productId;
+    //console.log(productId)
     let amount = -1;
-    this.updateProductCount(target, amount);
+    this.updateProductCount(productId, amount);
+    
 
-   });
+   }));
 
-  btnP.addEventListener('click', (event)=>{
-    let target = btnP.closest('[data-product-id]').dataset.productId;
+  btnP.forEach(btnPlus=> btnPlus.addEventListener('click', (event)=>{
+    
+    let productId =  btnPlus.closest('[data-product-id]').dataset.productId;
     let amount = 1;
-    this.updateProductCount(target, amount);
-  });
+    this.updateProductCount(productId, amount);
+  }));
 
    let form =  document.querySelector('.cart-form');
   
@@ -177,13 +183,24 @@ export default class Cart {
       let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
 
       productCount.innerHTML = cartItem.count;
+
+      if(cartItem.count==0){
+        document.querySelector(`[data-product-id="${productId}"]`).remove()
+      }
+   
       productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
       let fullCount = this.getTotalCount();
      
       if(fullCount==0){
         
-        this.modal.close();
+        let body = document.querySelector('body');
+        body.classList.remove('is-modal-open');
+        let modal = document.querySelector('.modal');
+        if (!modal) {
+          return
+        }
+        modal.remove();
       }
 
     } 
