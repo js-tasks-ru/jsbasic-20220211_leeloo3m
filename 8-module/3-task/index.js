@@ -88,7 +88,7 @@ export default class Cart {
       console.log( productPrice, infoPrice)
       if(fullCount==0){
         
-        document.querySelector('.modal').remove();
+       this.modal.close();
       }
 
     } 

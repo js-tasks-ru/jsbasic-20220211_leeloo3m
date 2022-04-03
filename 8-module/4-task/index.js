@@ -183,7 +183,7 @@ export default class Cart {
      
       if(fullCount==0){
         
-        document.querySelector('.modal').remove();
+        this.modal.close();
       }
 
     } 
