@@ -26,7 +26,8 @@ export default class Cart {
       if(foundProduct==false){
        this.cartItems.push(cartItem);
      } else if(foundProduct==true) {
-       cartItem.count++;
+      let cartItem = this.cartItems.find(item=>item.product.id==product.id)
+      cartItem.count++;
      };
     
    this.onProductUpdate(cartItem);
