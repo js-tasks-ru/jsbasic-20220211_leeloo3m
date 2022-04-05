@@ -135,7 +135,7 @@ export default class Cart {
   renderModal() {
 
   let modal = new Modal();
-  modal.open();
+  
   modal.setTitle('Your order');  
   
   
@@ -146,7 +146,7 @@ export default class Cart {
   
   node.append(this.renderOrderForm())
   modal.setBody(node);
-
+  modal.open();
   let btnM = document.querySelectorAll('.cart-counter__button_minus');
   let btnP = document.querySelectorAll('.cart-counter__button_plus');
 
@@ -167,7 +167,7 @@ export default class Cart {
   }));
 
    let form =  document.querySelector('.cart-form');
-  
+   
    form.addEventListener('submit', this.onSubmit);
   
   }
@@ -212,21 +212,20 @@ export default class Cart {
     document.querySelector('button[type="submit"]').classList.add('is-loading');
     let form = document.querySelector('.cart-form');
   
-    let response = fetch("https://httpbin.org/post", {
+    fetch("https://httpbin.org/post", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
       body: new FormData(form)
-  
+      
     })
-  
-   if(response.ok) {
+   .then(function(response){
+    if(response.ok) {
       document.querySelector('.modal__title').textContent= 'Success!';
-      this.cartItems.splice(0, this.cartItems.length);
+      //this.cartItems.splice(0, this.cartItems.length);
       document.querySelector('.modal__body').innerHTML = '';
-      document.querySelector('.modal__body').append(node);
-        let node = createElement(`
+      let node = createElement(`
         <div class="modal__body-inner">
         <p>
           Order successful! Your order is being cooked :) <br>
@@ -235,8 +234,12 @@ export default class Cart {
         </p>
       </div>
         `);
+      document.querySelector('.modal__body').append(node);
+        
 
     }
+
+   }) 
     
   };
 
