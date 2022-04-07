@@ -206,6 +206,7 @@ export default class Cart {
 
     } 
   }
+  
 
   onSubmit(event) {
     event.preventDefault();
@@ -214,13 +215,10 @@ export default class Cart {
   
     fetch("https://httpbin.org/post", {
       method: "POST",
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
       body: new FormData(form)
       
     })
-   .then(function(response){
+   .then(response=>{
     if(response.ok) {
       document.querySelector('.modal__title').textContent= 'Success!';
       //this.cartItems.splice(0, this.cartItems.length);
