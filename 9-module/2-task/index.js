@@ -1,3 +1,4 @@
+
 import Carousel from '../../6-module/3-task/index.js';
 import slides from '../../6-module/3-task/slides.js';
 
@@ -28,9 +29,10 @@ export default class Main {
    let sliderHolder = document.querySelector(`[data-slider-holder]`);
    
    let slider = new StepSlider({
-     steps: 5
+     steps: 5,
+     
    });
-   
+  
    sliderHolder.append(slider.elem);
    
 
@@ -54,11 +56,12 @@ export default class Main {
   });
 
   let body = document.querySelector('body');
-  body.addEventListener('product-add', (event)=>{
-    
-    let product = productArr.find(item=>item.id==event.detail)
+  body.addEventListener('product-add',  (event)=>{
+    (console.log(event.eventPhase))
+    let product = productArr.find(item=>item.id==event.detail);
     cart.addProduct(product);
-  })
+  });
+ 
   
 
   slider.elem.addEventListener('slider-change', (event)=>{

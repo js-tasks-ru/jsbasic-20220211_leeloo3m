@@ -206,13 +206,10 @@ export default class Cart {
 
     } 
   }
-  
-
-  onSubmit(event) {
+  onSubmit=(event)=>{
     event.preventDefault();
     document.querySelector('button[type="submit"]').classList.add('is-loading');
     let form = document.querySelector('.cart-form');
-  
     fetch("https://httpbin.org/post", {
       method: "POST",
       body: new FormData(form)
@@ -221,7 +218,7 @@ export default class Cart {
    .then(response=>{
     if(response.ok) {
       document.querySelector('.modal__title').textContent= 'Success!';
-      //this.cartItems.splice(0, this.cartItems.length);
+      this.cartItems.splice(0, this.cartItems.length);
       document.querySelector('.modal__body').innerHTML = '';
       let node = createElement(`
         <div class="modal__body-inner">
@@ -238,8 +235,9 @@ export default class Cart {
     }
 
    }) 
-    
-  };
+  }
+
+ 
 
   addEventListeners() {
     this.cartIcon.elem.onclick = () => this.renderModal();

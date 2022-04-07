@@ -1,6 +1,6 @@
 export default class StepSlider {
   elem = null;
-  constructor({ steps, value = 0 }) {
+  constructor({ steps, value=0 }) {
     this.steps = steps;
     this.value = value;
     this.elem = document.createElement('div');
