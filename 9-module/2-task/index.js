@@ -30,7 +30,7 @@ export default class Main {
    
    let slider = new StepSlider({
      steps: 5,
-     
+     value: 3
    });
   
    sliderHolder.append(slider.elem);
@@ -57,7 +57,7 @@ export default class Main {
 
   let body = document.querySelector('body');
   body.addEventListener('product-add',  (event)=>{
-    (console.log(event.eventPhase))
+
     let product = productArr.find(item=>item.id==event.detail);
     cart.addProduct(product);
   });

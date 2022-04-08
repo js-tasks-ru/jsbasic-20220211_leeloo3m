@@ -8,6 +8,7 @@ export default class StepSlider {
     this.value = value;
     this.makeHTML(); 
     this.span();
+    this.activSpan();
     this.dragndrop();
     this.changeVolume();
     
@@ -30,13 +31,21 @@ export default class StepSlider {
     
      while (spans < this.steps) {
       sliderSteps.insertAdjacentHTML('afterbegin', "<span></span>");
-      this.activSpan();
+      
+     
+      
       spans++;
+      //this.activSpan();
     }
   }
   activSpan(){
-    this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+    console.log(this.elem.querySelector(`.slider__steps span:nth-child(4)`))
+   
+      this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
+    
+    
     this.elem.addEventListener('click', ()=>{
+      
       let spanB = this.elem.querySelector(`.slider__steps span:nth-child(${this.value+1})`).classList.add('slider__step-active');
       console.log(spanB)
     })
