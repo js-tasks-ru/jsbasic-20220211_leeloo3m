@@ -3,6 +3,7 @@ function initCarousel() {
   let arrowRight = document.querySelector('.carousel__arrow_right');
   let carousel = document.querySelector('.carousel__inner');
   let offsetWidth = carousel.offsetWidth;
+  
   let startPosition = 0;
   
 

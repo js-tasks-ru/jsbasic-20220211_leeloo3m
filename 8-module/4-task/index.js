@@ -8,28 +8,79 @@ export default class Cart {
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-
+   // this.onProductUpdate();
     this.addEventListeners();
+    
   }
 
   addProduct(product) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    if(product==null||product.length==0||product==undefined){
+      return
+       }    
+     let cartItem = {
+       product: product,
+       count: 1
+     };
+     let foundProduct = this.cartItems.some(item=>item.product.id==product.id);
+ 
+      if(foundProduct==false){
+       this.cartItems.push(cartItem);
+     } else if(foundProduct==true) {
+      let cartItem = this.cartItems.find(item=>item.product.id==product.id)
+      cartItem.count++;
+     };
+    
+   this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
-  }
+    let cartItem = this.cartItems.find(cartItem=>{
+    
+     return cartItem.product.id==productId
+    });
+    
 
+        if(amount==1){
+          cartItem.count++;
+        } else if(amount==-1){
+          cartItem.count--;
+          if(cartItem.count==0){
+            let i = this.cartItems.indexOf(cartItem);
+            
+            this.cartItems.splice(i, 1);
+           
+            //console.log(this.cartItems)
+          } 
+        }
+
+  this.onProductUpdate(cartItem);
+  
+  }
   isEmpty() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+  
+    if(this.cartItems.length==0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getTotalCount() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+     let totalCount = 0;
+     this.cartItems.forEach(cart=>{
+       return totalCount+=cart.count;
+     })
+     return totalCount;
+     //console.log(this.cartItems)
   }
 
   getTotalPrice() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    
+     let totalPrice = 0;
+     this.cartItems.forEach(cart=>{
+       return totalPrice+=cart.count*cart.product.price;
+     })
+    return totalPrice;
   }
 
   renderProduct(product, count) {
@@ -73,9 +124,7 @@ export default class Cart {
         <div class="cart-buttons__buttons btn-group">
           <div class="cart-buttons__info">
             <span class="cart-buttons__info-text">total</span>
-            <span class="cart-buttons__info-price">€${this.getTotalPrice().toFixed(
-              2
-            )}</span>
+            <span class="cart-buttons__info-price">€${this.getTotalPrice().toFixed(2)}</span>
           </div>
           <button type="submit" class="cart-buttons__button btn-group__button button">order</button>
         </div>
@@ -84,21 +133,116 @@ export default class Cart {
   }
 
   renderModal() {
-    // ...ваш код
+
+  let modal = new Modal();
+  
+  modal.setTitle('Your order');  
+  
+  
+  let node = createElement(`<div></div`);
+  for(let i = 0; i<this.cartItems.length; i++){
+    node.append(this.renderProduct(this.cartItems[i].product, this.cartItems[i].count));
+  }
+  
+  node.append(this.renderOrderForm())
+  modal.setBody(node);
+  modal.open();
+  let btnM = document.querySelectorAll('.cart-counter__button_minus');
+  let btnP = document.querySelectorAll('.cart-counter__button_plus');
+
+  btnM.forEach(btnMinus=> btnMinus.addEventListener('click', (event)=>{
+    let productId = btnMinus.closest('[data-product-id]').dataset.productId;
+    //console.log(productId)
+    let amount = -1;
+    this.updateProductCount(productId, amount);
+    
+
+   }));
+
+  btnP.forEach(btnPlus=> btnPlus.addEventListener('click', (event)=>{
+    
+    let productId =  btnPlus.closest('[data-product-id]').dataset.productId;
+    let amount = 1;
+    this.updateProductCount(productId, amount);
+  }));
+
+   let form =  document.querySelector('.cart-form');
+   
+   form.addEventListener('submit', this.onSubmit);
+  
   }
 
   onProductUpdate(cartItem) {
-    // ...ваш код
-
     this.cartIcon.update(this);
+    if(document.querySelector('body').classList.contains('is-modal-open')){
+      let productId = cartItem.product.id;
+      let modalBody = document.querySelector('.modal__body');
+      
+      let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      
+      let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+      let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
+
+      productCount.innerHTML = cartItem.count;
+
+      if(cartItem.count==0){
+        document.querySelector(`[data-product-id="${productId}"]`).remove()
+      }
+   
+      productPrice.innerHTML = `€${(cartItem.product.price * cartItem.count).toFixed(2)}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+      let fullCount = this.getTotalCount();
+     
+      if(fullCount==0){
+        
+        let body = document.querySelector('body');
+        body.classList.remove('is-modal-open');
+        let modal = document.querySelector('.modal');
+        if (!modal) {
+          return
+        }
+        modal.remove();
+      }
+
+    } 
+  }
+  onSubmit=(event)=>{
+    event.preventDefault();
+    document.querySelector('button[type="submit"]').classList.add('is-loading');
+    let form = document.querySelector('.cart-form');
+    fetch("https://httpbin.org/post", {
+      method: "POST",
+      body: new FormData(form)
+      
+    })
+   .then(response=>{
+    if(response.ok) {
+      document.querySelector('.modal__title').textContent= 'Success!';
+      this.cartItems.splice(0, this.cartItems.length);
+      this.cartIcon.update(this);
+      document.querySelector('.modal__body').innerHTML = '';
+      let node = createElement(`
+        <div class="modal__body-inner">
+        <p>
+          Order successful! Your order is being cooked :) <br>
+          We’ll notify you about delivery time shortly.<br>
+          <img src="/assets/images/delivery.gif">
+        </p>
+      </div>
+        `);
+      document.querySelector('.modal__body').append(node);
+        
+
+    }
+
+   }) 
   }
 
-  onSubmit(event) {
-    // ...ваш код
-  };
+ 
 
   addEventListeners() {
     this.cartIcon.elem.onclick = () => this.renderModal();
+  
   }
 }
 
