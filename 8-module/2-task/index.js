@@ -28,8 +28,7 @@ export default class ProductGrid {
     for(let i=0; i<productCard.length; i++){
       productGridInner.append(productCard[i].elem)
     }
-     
-    //console.log(productCards)
+    
   }
  
   updateFilter(filters){
@@ -57,7 +56,6 @@ export default class ProductGrid {
     
       let productGridInner = this.elem.querySelector('.products-grid__inner');
       let productCard = filteredProducts.map(item => new ProductCard(item));
-      console.log(productCard)
       productGridInner.innerHTML = "";
       for (let i = 0; i < productCard.length; i++) {
         productGridInner.append(productCard[i].elem ) 

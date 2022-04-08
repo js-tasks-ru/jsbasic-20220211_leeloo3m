@@ -219,6 +219,7 @@ export default class Cart {
     if(response.ok) {
       document.querySelector('.modal__title').textContent= 'Success!';
       this.cartItems.splice(0, this.cartItems.length);
+      this.cartIcon.update(this);
       document.querySelector('.modal__body').innerHTML = '';
       let node = createElement(`
         <div class="modal__body-inner">
