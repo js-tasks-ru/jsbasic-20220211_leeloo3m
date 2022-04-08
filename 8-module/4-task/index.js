@@ -189,7 +189,7 @@ export default class Cart {
         document.querySelector(`[data-product-id="${productId}"]`).remove()
       }
    
-      productPrice.innerHTML = `€${cartItem.product.price.toFixed(2)}`;
+      productPrice.innerHTML = `€${(cartItem.product.price * cartItem.count).toFixed(2)}`;
       infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
       let fullCount = this.getTotalCount();
      

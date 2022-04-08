@@ -8,19 +8,30 @@ export default class ProductGrid {
     this.filters = {
      
     };
-    this.elem = createElement(this.makeHTML());
-    this.productCard();
-   
-  }
-  makeHTML(){
-    return `
+    this.elem = createElement(`
     <div class="products-grid">
   <div class="products-grid__inner">
     <!--ВОТ ТУТ БУДУТ КАРТОЧКИ ТОВАРОВ-->
   </div>
 </div>
-    `
+    `);
+    this.productsCard();
+    //this.updateFilter();
+    
+    
   }
+
+  productsCard(){
+    let productGridInner = this.elem.querySelector('.products-grid__inner');
+    let productCard = this.products.map(item=>new ProductCard(item) ) ;
+   
+    for(let i=0; i<productCard.length; i++){
+      productGridInner.append(productCard[i].elem)
+    }
+     
+    //console.log(productCards)
+  }
+ 
   updateFilter(filters){
     
     this.filters = Object.assign(this.filters, filters);
@@ -44,38 +55,14 @@ export default class ProductGrid {
 
       }
     
-      let a = `${filteredProducts.map(item=>`<div class="card">
-      <div class="card__top">
-          <img src="/assets/images/products/${item.image}" class="card__image" alt="product">
-          <span class="card__price">€${item.price.toFixed(2)}</span>
-      </div>
-      <div class="card__body">
-          <div class="card__title">${item.name}</div>
-          <button type="button" class="card__button">
-              <img src="/assets/images/icons/plus-icon.svg" alt="icon">
-          </button>
-      </div>
-  </div>`).join('')}`
-      this.elem.querySelector('.products-grid__inner').innerHTML = a; 
-    
-  }
+      let productGridInner = this.elem.querySelector('.products-grid__inner');
+      let productCard = filteredProducts.map(item => new ProductCard(item));
+      console.log(productCard)
+      productGridInner.innerHTML = "";
+      for (let i = 0; i < productCard.length; i++) {
+        productGridInner.append(productCard[i].elem ) 
+      }
+      }
 
-  productCard(){
-    let a = `${this.products.map(item=>`<div class="card">
-    <div class="card__top">
-        <img src="/assets/images/products/${item.image}" class="card__image" alt="product">
-        <span class="card__price">€${item.price.toFixed(2)}</span>
-    </div>
-    <div class="card__body">
-        <div class="card__title">${item.name}</div>
-        <button type="button" class="card__button">
-            <img src="/assets/images/icons/plus-icon.svg" alt="icon">
-        </button>
-    </div>
-</div>`).join('')}`
-    this.elem.querySelector('.products-grid__inner').innerHTML = a; 
-  }
-
-  
 
 }
